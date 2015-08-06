@@ -1,3 +1,5 @@
 rabbitmq:
     image: rabbitmq
     hostname: rabbit
+    ports:
+        - "5672:5672"
