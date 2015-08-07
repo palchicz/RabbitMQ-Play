@@ -21,9 +21,11 @@ def callback(ch, method, properties, body):
     print(" [x] Received {}".format(body))
     time.sleep(body.count('.'))
     print(" [x] Done")
+    # Common error to forget this! Memory leak potential!
+    ch.basic_ack(delivery_tag = method.delivery_tag)
 
 
 # Register the callback with Pika
-channel.basic_consume(callback, queue='hello', no_ack=True)
+channel.basic_consume(callback, queue='hello')
 print(' [*] Waiting for messages. To exit, press CTRL+C')
 channel.start_consuming()
