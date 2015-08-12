@@ -12,7 +12,7 @@ channel = connection.channel()
 # Make sure the queue exists
 # Good practice to do this for both sender and receiver b/c
 # not clear who is invoked first
-channel.queue_declare(queue='hello')
+channel.queue_declare(queue='task_queue', durable=True)
 
 # Declare a callback function to be executed when the message is
 # received. This call back does a second of work for each `.`
@@ -26,6 +26,6 @@ def callback(ch, method, properties, body):
 
 
 # Register the callback with Pika
-channel.basic_consume(callback, queue='hello')
+channel.basic_consume(callback, queue='task_queue')
 print(' [*] Waiting for messages. To exit, press CTRL+C')
 channel.start_consuming()

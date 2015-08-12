@@ -8,13 +8,17 @@ connection = pika.BlockingConnection(pika.ConnectionParameters(
 channel = connection.channel()
 
 # Create the recipient queue
-channel.queue_declare(queue='hello')
+channel.queue_declare(queue='task_queue', durable=True)
 
 message = ' '.join(sys.argv[1:]) or "Hello World!"
 
 # Send the message to the queue
 channel.basic_publish(
-    exchange='', routing_key='hello', body=message)
+    exchange='',
+    routing_key='task_queue',
+    body=message,
+    properties=pika.BasicProperties(delivery_mode = 2) # make msg persistant
+)
 
 print(" [x] Sent {}".format(message))
 connection.close()
