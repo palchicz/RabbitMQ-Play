@@ -25,6 +25,9 @@ def callback(ch, method, properties, body):
     ch.basic_ack(delivery_tag = method.delivery_tag)
 
 
+# Only agree to consume [x] number of msgs at a time
+channel.basic_qos(prefetch_count=1)
+
 # Register the callback with Pika
 channel.basic_consume(callback, queue='task_queue')
 print(' [*] Waiting for messages. To exit, press CTRL+C')
